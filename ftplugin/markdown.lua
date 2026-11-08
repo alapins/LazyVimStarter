@@ -12,3 +12,15 @@ vim.opt_local.breakindentopt = "list:-1"
 -- Recognize markdown bullets (-, *, +) and numbered lists so list:-1 can find
 -- where the text starts on each item.
 vim.opt_local.formatlistpat = [[^\s*\d\+[.)]\s\+\|^\s*[-*+]\s\+]]
+
+-- Navigate by visual (wrapped) lines like a normal text editor. A count still
+-- means real lines, so 5j / relativenumber jumps keep working.
+local function map(lhs, rhs)
+  vim.keymap.set({ "n", "x" }, lhs, rhs, { expr = true, buffer = true, silent = true })
+end
+map("j", "v:count == 0 ? 'gj' : 'j'")
+map("k", "v:count == 0 ? 'gk' : 'k'")
+map("<Down>", "v:count == 0 ? 'gj' : 'j'")
+map("<Up>", "v:count == 0 ? 'gk' : 'k'")
+map("0", "g0")
+map("$", "g$")
